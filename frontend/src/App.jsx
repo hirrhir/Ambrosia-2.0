@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import CustomerMenu from './pages/customer/CustomerMenu';
 import KitchenDashboard from './pages/kitchen/KitchenDashboard';
+import WaiterDashboard from './pages/waiter/WaiterDashboard';
 
 function PrivateRoute({ children, allowedRoles }) {
   const { user } = useAuth();
@@ -32,6 +33,14 @@ function App() {
             element={
              <PrivateRoute allowedRoles={['kitchen', 'admin']}>
               <KitchenDashboard />
+             </PrivateRoute>
+           }
+          />
+          <Route
+             path="/waiter"
+             element={
+              <PrivateRoute allowedRoles={['waiter']}>
+               <WaiterDashboard />
              </PrivateRoute>
            }
           />

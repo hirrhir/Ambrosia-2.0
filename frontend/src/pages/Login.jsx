@@ -16,7 +16,8 @@ export default function Login() {
       const user = await login(email, password);
       if (user.role === 'customer') navigate('/menu');
         else if (user.role === 'kitchen') navigate('/kitchen');
-        else navigate('/menu'); // waiter/admin dashboards come later
+        else if (user.role === 'waiter') navigate('/waiter');
+        else navigate('/menu'); 
     } catch (err) {
       setError('Invalid email or password');
     }
