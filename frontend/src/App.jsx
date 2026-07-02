@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import CustomerMenu from './pages/customer/CustomerMenu';
 import KitchenDashboard from './pages/kitchen/KitchenDashboard';
 import WaiterDashboard from './pages/waiter/WaiterDashboard';
+import OrderHistory from './pages/customer/OrderHistory';
 
 function PrivateRoute({ children, allowedRoles }) {
   const { user } = useAuth();
@@ -43,6 +44,14 @@ function App() {
                <WaiterDashboard />
              </PrivateRoute>
            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <PrivateRoute allowedRoles={['customer']}>
+                <OrderHistory />
+              </PrivateRoute>
+          }
           />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>

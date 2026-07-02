@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
+import Header from '../../components/Header';
 
 export default function WaiterDashboard() {
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState([]);
   const [tableNumber, setTableNumber] = useState('');
   const [placing, setPlacing] = useState(false);
@@ -13,8 +15,10 @@ export default function WaiterDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get('/menu/categories').then((res) => setCategories(res.data));
-  }, []);
+  api.get('/menu/categories')
+    .then((res) => setCategories(res.data))
+    .finally(() => setLoading(false));
+}, []);
 
   const addToCart = (item) => {
     setCart((prev) => {
@@ -64,22 +68,14 @@ export default function WaiterDashboard() {
 
   return (
     <div className="min-h-screen bg-white">
-      <header className="flex items-center justify-between px-6 py-4 border-b border-orange-100">
-        <h1 className="text-2xl font-bold text-stone-900">Waiter — New Order</h1>
-        <div className="flex items-center gap-4">
-          <span className="text-stone-500 text-sm">{user?.name}</span>
-          <button
-            onClick={() => { logout(); navigate('/login'); }}
-            className="text-orange-600 text-sm font-medium"
-          >
-            Log Out
-          </button>
-        </div>
-      </header>
+     <Header title="Waiter — New Order" />
 
       <div className="flex flex-col md:flex-row">
         <div className="flex-1 p-6 space-y-8">
-          {categories.map((cat) => (
+          {loading ? (
+            <p className="text-stone-500">Loading menu...</p>
+              ) : (
+          categories.map((cat) => (
             <div key={cat.id}>
               <h2 className="text-lg font-semibold text-stone-900 mb-3">{cat.name}</h2>
               <div className="grid sm:grid-cols-2 gap-3">
@@ -104,7 +100,8 @@ export default function WaiterDashboard() {
                 ))}
               </div>
             </div>
-          ))}
+          ))
+          )}
         </div>
 
         <div className="w-full md:w-80 bg-orange-50 p-6 border-l border-orange-100">
