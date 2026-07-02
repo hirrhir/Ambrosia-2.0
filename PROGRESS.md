@@ -35,3 +35,10 @@ Deployment (optional bonus)
 
 Immediate next step: build out CustomerMenu.jsx — fetch menu items from /api/menu/items, display with cart state, submit order via /api/orders.
 Paste this into PROGRESS.md in your repo root so it's saved regardless of chat/token limits.
+
+update:
+DONE: Backend fully functional (auth, menu, orders, sockets). Frontend: 
+      login/register, customer menu + cart + order placement — tested 
+      working end to end via UI.
+NEXT: Kitchen dashboard (view orders, update status) — most important 
+      remaining piece since it showcases real-time Socket.io updates.

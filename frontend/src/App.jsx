@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import CustomerMenu from './pages/customer/CustomerMenu';
+import KitchenDashboard from './pages/kitchen/KitchenDashboard';
 
 function PrivateRoute({ children, allowedRoles }) {
   const { user } = useAuth();
@@ -25,6 +26,14 @@ function App() {
                 <CustomerMenu />
               </PrivateRoute>
             }
+          />
+          <Route
+            path="/kitchen"
+            element={
+             <PrivateRoute allowedRoles={['kitchen', 'admin']}>
+              <KitchenDashboard />
+             </PrivateRoute>
+           }
           />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>

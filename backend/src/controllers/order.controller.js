@@ -85,9 +85,10 @@ const updateOrderStatus = async (req, res) => {
   }
 
   const order = await prisma.order.update({
-    where: { id: Number(id) },
-    data: { status },
-  });
+  where: { id: Number(id) },
+  data: { status },
+  include: { items: { include: { menuItem: true } }, table: true },
+});
 
   emitOrderUpdate(order);
 
