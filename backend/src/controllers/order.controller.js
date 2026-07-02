@@ -1,16 +1,14 @@
 const prisma = require('../utils/prismaClient');
+const { emitOrderUpdate } = require('../sockets/orderSocket');
 
-// Create an order (customer -> delivery, waiter -> dine-in)
 const createOrder = async (req, res) => {
   try {
     const { orderType, tableId, deliveryAddress, items } = req.body;
-    // items: [{ menuItemId, quantity, specialInstructions }]
 
     if (!items || items.length === 0) {
       return res.status(400).json({ error: 'Order must have at least one item' });
     }
 
-    // fetch menu items to get current prices
     const menuItemIds = items.map((i) => i.menuItemId);
     const menuItems = await prisma.menuItem.findMany({
       where: { id: { in: menuItemIds } },
@@ -52,6 +50,8 @@ const createOrder = async (req, res) => {
       include: { items: { include: { menuItem: true } } },
     });
 
+    emitOrderUpdate(order);
+
     res.status(201).json(order);
   } catch (err) {
     console.error(err);
@@ -59,14 +59,12 @@ const createOrder = async (req, res) => {
   }
 };
 
-// Get orders - scoped by role
 const getOrders = async (req, res) => {
   const { role, id } = req.user;
   let where = {};
 
   if (role === 'customer') where = { customerId: id };
   else if (role === 'waiter') where = { waiterId: id };
-  // kitchen and admin see all orders (no filter)
 
   const orders = await prisma.order.findMany({
     where,
@@ -90,6 +88,8 @@ const updateOrderStatus = async (req, res) => {
     where: { id: Number(id) },
     data: { status },
   });
+
+  emitOrderUpdate(order);
 
   res.json(order);
 };
