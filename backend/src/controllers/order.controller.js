@@ -38,10 +38,16 @@ const createOrder = async (req, res) => {
     if (orderType === 'delivery') {
       data.customerId = req.user.id;
       data.deliveryAddress = deliveryAddress;
-    } else if (orderType === 'dine_in') {
-      data.waiterId = req.user.id;
-      data.tableId = tableId;
-    } else {
+    }else if (orderType === 'dine_in') {
+        data.waiterId = req.user.id;
+
+        const table = await prisma.table.upsert({
+         where: { tableNumber: Number(tableId) },
+            update: {},
+         create: { tableNumber: Number(tableId), capacity: 4, status: 'occupied' },
+         });
+         data.tableId = table.id;
+    }else {
       return res.status(400).json({ error: 'Invalid orderType' });
     }
 
