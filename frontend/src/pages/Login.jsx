@@ -17,6 +17,7 @@ export default function Login() {
       if (user.role === 'customer') navigate('/menu');
         else if (user.role === 'kitchen') navigate('/kitchen');
         else if (user.role === 'waiter') navigate('/waiter');
+        else if (user.role === 'admin') navigate('/admin');
         else navigate('/menu'); 
     } catch (err) {
       setError('Invalid email or password');

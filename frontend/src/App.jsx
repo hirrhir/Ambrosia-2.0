@@ -6,6 +6,7 @@ import CustomerMenu from './pages/customer/CustomerMenu';
 import KitchenDashboard from './pages/kitchen/KitchenDashboard';
 import WaiterDashboard from './pages/waiter/WaiterDashboard';
 import OrderHistory from './pages/customer/OrderHistory';
+import AdminMenu from './pages/admin/AdminMenu';
 
 function PrivateRoute({ children, allowedRoles }) {
   const { user } = useAuth();
@@ -48,11 +49,19 @@ function App() {
           <Route
             path="/orders"
             element={
-              <PrivateRoute allowedRoles={['customer']}>
-                <OrderHistory />
-              </PrivateRoute>
-          }
-          />
+             <PrivateRoute allowedRoles={['customer']}>
+              <OrderHistory />
+             </PrivateRoute>
+            }
+           />
+           <Route
+            path="/admin"
+            element={
+             <PrivateRoute allowedRoles={['admin']}>
+              <AdminMenu />
+             </PrivateRoute>
+           }
+           />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>
