@@ -1,3 +1,7 @@
+## Live Demo
+- Frontend: https://ambrosia-2-0.vercel.app
+- Backend API: https://ambrosia-2-0.onrender.com/api
+
 # Ambrosia — Restaurant Ordering App
 
 A full-stack restaurant ordering system supporting delivery orders (customers) and dine-in orders (waiters), with a live kitchen queue that updates in real time.
@@ -103,3 +107,4 @@ Add a `MenuCategory` first, then `MenuItem` records linked to it by `categoryId`
 
 - SQLite is used for local development simplicity. For production deployment, swapping to a hosted Postgres database (e.g. via Supabase) is a straightforward Prisma datasource change.
 - Table records for dine-in orders are created automatically the first time a waiter enters a new table number — no manual table setup required.
+
